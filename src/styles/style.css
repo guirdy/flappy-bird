@@ -23,7 +23,6 @@ body {
     height: 80vh;
     width: 80vw;
     margin: 15px;
-    background-color: deepskyblue;
     overflow: hidden;
 }
 
@@ -31,7 +30,6 @@ body {
     position: absolute;
     width: 60px;
     left: calc(50% - 30px);
-    bottom: 50%;
 }
 
 .barrier-pair {

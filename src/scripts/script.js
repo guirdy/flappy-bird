@@ -48,7 +48,7 @@ function Barriers(barriersHeight, playWidth, barriersOpening, space, pointNotifi
         new BarrierPair(barriersHeight, barriersOpening, playWidth + space * 3)
     ]
 
-    const displacement = 3;
+    const displacement = 4;
     this.animation = () => {
         this.pairs.forEach(pair => {
             pair.setX(pair.getX() - displacement);
@@ -62,14 +62,58 @@ function Barriers(barriersHeight, playWidth, barriersOpening, space, pointNotifi
             const crossedTheMiddle = pair.getX() + displacement >= middle &&
                 pair.getX() < middle;
 
-            if (crossedTheMiddle) pointNotification();
+            //if (crossedTheMiddle) pointNotification();
         });
     }
 }
 
-const barriers = new Barriers(800, 800, 520, 400);
+function Bird(gameHeight) {
+    let flying = false;
+
+    this.element = newElement('img', 'bird');
+    this.element.src = '../../assets/bird.png';
+
+    this.getY = () => parseInt(this.element.style.bottom.split('px')[0]);
+    this.setY = y => this.element.style.bottom = `${y}px`;
+
+    window.onkeydown = e => flying = true;
+    window.onkeyup = e => flying = false;
+
+    this.animation = () => {
+        const newY = this.getY() + (flying ? 8 : -5);
+        const maxHeight = gameHeight - this.element.clientHeight;
+
+        if (newY <= 0) {
+            this.setY(0);
+        } else if (newY >= maxHeight) {
+            this.setY(maxHeight);
+        } else {
+            this.setY(newY);
+        }
+    }
+
+    this.setY(gameHeight / 2);
+}
+
+function sky() {
+    let hour = new Date().getHours();
+
+    if (hour > 18 || hour < 7) {
+        document.querySelector('[wm-flappy]').style.backgroundColor = '#191970';
+    } else {
+        document.querySelector('[wm-flappy]').style.backgroundColor = '#00bfff';
+    }
+}
+
+sky();
+
+const barriers = new Barriers(700, 800, 450, 400);
+const bird = new Bird(700);
 const gameArea = document.querySelector('[wm-flappy]');
+
+gameArea.appendChild(bird.element);
 barriers.pairs.forEach(pair => gameArea.appendChild(pair.element));
 setInterval(() => {
     barriers.animation();
+    bird.animation();
 }, 20);
