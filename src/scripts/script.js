@@ -105,15 +105,38 @@ function sky() {
     }
 }
 
+function Progress() {
+    this.element = newElement('span', 'progress');
+    this.updatePoints = points => {
+        this.element.innerHTML = points;
+    }
+    this.updatePoints(0);
+}
+
+function FlappyBird() {
+    let points = 0;
+
+    const gameArea = document.querySelector('[wm-flappy]');
+    const gameHeight = gameArea.clientHeight;
+    const gameWidth = gameArea.clientWidth;
+
+    const progress = new Progress();
+    const barriers = new Barriers(gameHeight, gameWidth, 200, 400,
+        () => progress.updatePoints(++points));
+
+    const bird = new Bird(gameHeight);
+
+    gameArea.appendChild(progress.element);
+    gameArea.appendChild(bird.element);
+    barriers.pairs.forEach(pair => gameArea.appendChild(pair.element));
+
+    this.start = () => {
+        const timer = setInterval(() => {
+            barriers.animation();
+            bird.animation();
+        }, 20);
+    }
+}
+
 sky();
-
-const barriers = new Barriers(700, 800, 450, 400);
-const bird = new Bird(700);
-const gameArea = document.querySelector('[wm-flappy]');
-
-gameArea.appendChild(bird.element);
-barriers.pairs.forEach(pair => gameArea.appendChild(pair.element));
-setInterval(() => {
-    barriers.animation();
-    bird.animation();
-}, 20);
+new FlappyBird().start();
