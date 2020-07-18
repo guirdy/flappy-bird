@@ -124,7 +124,7 @@ function overlap(elementA, elementB) {
         && b.left + b.width >= a.left;
     const vertical = a.top + a.height >= b.top
         && b.top + b.height >= a.top;
-    
+
     return horizontal && vertical;
 }
 
@@ -166,7 +166,7 @@ function FlappyBird() {
             barriers.animation();
             bird.animation();
 
-            if(collided(bird, barriers)) {
+            if (collided(bird, barriers)) {
                 clearInterval(timer);
                 reload.style.display = 'flex';
             }
