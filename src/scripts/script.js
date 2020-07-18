@@ -1,3 +1,6 @@
+let resetGame = document.querySelector('.reload');
+resetGame.addEventListener('click', () => document.location.reload(true));
+
 function newElement(tagName, className) {
     const elem = document.createElement(tagName);
     elem.className = className;
@@ -62,7 +65,7 @@ function Barriers(barriersHeight, playWidth, barriersOpening, space, pointNotifi
             const crossedTheMiddle = pair.getX() + displacement >= middle &&
                 pair.getX() < middle;
 
-            //if (crossedTheMiddle) pointNotification();
+            if (crossedTheMiddle) pointNotification();
         });
     }
 }
@@ -113,6 +116,33 @@ function Progress() {
     this.updatePoints(0);
 }
 
+function overlap(elementA, elementB) {
+    const a = elementA.getBoundingClientRect();
+    const b = elementB.getBoundingClientRect();
+
+    const horizontal = a.left + a.width >= b.left
+        && b.left + b.width >= a.left;
+    const vertical = a.top + a.height >= b.top
+        && b.top + b.height >= a.top;
+    
+    return horizontal && vertical;
+}
+
+function collided(bird, barriers) {
+    let collided = false;
+
+    barriers.pairs.forEach(barrierPair => {
+        if (!collided) {
+            const higher = barrierPair.upperBarrier.element;
+            const bottom = barrierPair.lowerBarrier.element;
+
+            collided = overlap(bird.element, higher)
+                || overlap(bird.element, bottom);
+        }
+    });
+    return collided;
+}
+
 function FlappyBird() {
     let points = 0;
 
@@ -125,6 +155,7 @@ function FlappyBird() {
         () => progress.updatePoints(++points));
 
     const bird = new Bird(gameHeight);
+    let reload = document.querySelector('.icon');
 
     gameArea.appendChild(progress.element);
     gameArea.appendChild(bird.element);
@@ -134,6 +165,11 @@ function FlappyBird() {
         const timer = setInterval(() => {
             barriers.animation();
             bird.animation();
+
+            if(collided(bird, barriers)) {
+                clearInterval(timer);
+                reload.style.display = 'flex';
+            }
         }, 20);
     }
 }
