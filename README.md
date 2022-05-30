@@ -8,7 +8,6 @@ Flappy Bird
   <a href="https://github.com/gui-leandro">
     <img src="https://img.shields.io/badge/author-guilhermeleandro-important?style=flat-square" alt="author">
   </a>
-  <img src="https://img.shields.io/github/languages/count/gui-leandro/flappy-bird?color=important&style=flat-square">
 </p>
 
 <hr>
