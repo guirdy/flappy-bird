@@ -119,3 +119,10 @@ body {
     font-size: 70px;
     z-index: 100;
 }
+
+footer > h1 {
+    color: #fff;
+    font-size: 26px;
+    text-align: center;
+    margin-top: 56px;
+}
